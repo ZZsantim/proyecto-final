@@ -1,0 +1,291 @@
+@switch (page.screenId()) {
+  @case ('SE-01') {
+    <div class="metric-grid">
+      <article class="surface metric-card">
+        <span class="metric-value">{{
+          page.todayAppointments().length.toString().padStart(2, '0')
+        }}</span
+        ><span>{{ 'sections.appointments' | translate }}</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">03</span><span>{{ 'sections.availableSlots' | translate }}</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">{{ page.occupiedBays() }}/3</span
+        ><span>{{ 'sections.workOrders' | translate }}</span>
+      </article>
+    </div>
+    <section class="surface content-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ 'ui.today' | translate }}</span>
+          <h2>{{ 'sections.queue' | translate }}</h2>
+        </div>
+        <a class="button button-primary" routerLink="/recepcion/ingreso">{{
+          'actions.newWalkIn' | translate
+        }}</a>
+      </div>
+      <div
+        class="table-wrap"
+        role="region"
+        tabindex="0"
+        [attr.aria-label]="'ui.scrollTableHint' | translate"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'ui.time' | translate }}</th>
+              <th>{{ 'ui.vehicle' | translate }}</th>
+              <th>{{ 'ui.service' | translate }}</th>
+              <th>{{ 'ui.status' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (appointment of page.todayAppointments(); track appointment.id) {
+              <tr>
+                <td class="mono">{{ appointment.time }}</td>
+                <td>{{ page.vehicleName(appointment.vehicleId) }}</td>
+                <td>{{ page.serviceName(appointment.serviceId) }}</td>
+                <td>
+                  <span class="status-badge" [class]="page.statusTone(appointment.status)">{{
+                    page.statusKey(appointment.status) | translate
+                  }}</span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @case ('SE-02') {
+    <div class="form-layout">
+      <section class="surface form-panel">
+        <h2>{{ 'sections.noAppointment' | translate }}</h2>
+        <div class="field-grid">
+          <label
+            ><span>{{ 'ui.vehicle' | translate }}</span
+            ><select [(ngModel)]="page.walkInVehicleId" name="walkInVehicle">
+              @for (vehicle of page.vehicles(); track vehicle.id) {
+                <option [value]="vehicle.id">{{ vehicle.makeModel }} · {{ vehicle.serial }}</option>
+              }
+            </select></label
+          >
+          <label
+            ><span>{{ 'fields.failureType' | translate }}</span
+            ><select [(ngModel)]="page.walkInFailure" name="failure">
+              @for (failure of page.failures; track failure.id) {
+                <option [value]="failure.id">{{ page.failureName(failure.id) }}</option>
+              }
+            </select></label
+          >
+          <label
+            ><span>{{ 'ui.priority' | translate }}</span
+            ><select [(ngModel)]="page.walkInPriority" name="priority">
+              <option value="ALTA">{{ 'status.ALTA' | translate }}</option>
+              <option value="MEDIA">{{ 'status.MEDIA' | translate }}</option>
+              <option value="BAJA">{{ 'status.BAJA' | translate }}</option>
+            </select></label
+          >
+        </div>
+        <div class="photo-placeholder">
+          <span class="photo-icon" aria-hidden="true">＋</span
+          ><strong>{{ 'sections.vehicleInfo' | translate }}</strong
+          ><span>{{ 'messages.photoLater' | translate }}</span>
+        </div>
+        @if (page.formMessage) {
+          <p class="form-message success" role="status">{{ page.formMessage | translate }}</p>
+        }
+        <div class="button-row">
+          <a class="button button-secondary" routerLink="/recepcion/registrar-cliente">{{
+            'actions.registerCustomer' | translate
+          }}</a>
+          <button class="button button-primary" type="button" (click)="page.createWorkOrder()">
+            {{ 'actions.createOrder' | translate }}
+          </button>
+        </div>
+      </section>
+      <aside class="surface summary-panel">
+        <span class="eyebrow">{{ 'ui.priority' | translate }}</span>
+        <span class="priority-large" [class]="page.statusTone(page.walkInPriority)">{{
+          page.statusKey(page.walkInPriority) | translate
+        }}</span>
+        <p>{{ 'sections.queue' | translate }} · {{ page.orders().length + 1 }}</p>
+      </aside>
+    </div>
+  }
+
+  @case ('SE-03') {
+    <section class="surface form-panel">
+      <h2>{{ 'sections.customerInfo' | translate }}</h2>
+      <div class="field-grid">
+        <label
+          ><span>{{ 'ui.name' | translate }}</span
+          ><input [(ngModel)]="page.fullName" name="customerName" required
+        /></label>
+        <label
+          ><span>{{ 'ui.document' | translate }}</span
+          ><input [(ngModel)]="page.documentNumber" name="document" required
+        /></label>
+        <label
+          ><span>{{ 'ui.phone' | translate }}</span
+          ><input [(ngModel)]="page.phone" name="phone" type="tel"
+        /></label>
+        <label
+          ><span>{{ 'ui.email' | translate }}</span
+          ><input [(ngModel)]="page.email" name="email" type="email"
+        /></label>
+      </div>
+      <h2 class="form-section-title">{{ 'sections.vehicleInfo' | translate }}</h2>
+      <div class="field-grid">
+        <label
+          ><span>{{ 'fields.vehicleType' | translate }}</span
+          ><select [(ngModel)]="page.newVehicle.type" name="vehicleType">
+            @for (type of page.vehicleTypes; track type) {
+              <option [value]="type">{{ page.vehicleTypeKey(type) | translate }}</option>
+            }
+          </select></label
+        >
+        <label
+          ><span>{{ 'fields.brandModel' | translate }}</span
+          ><input [(ngModel)]="page.newVehicle.makeModel" name="model"
+        /></label>
+        <label
+          ><span>{{ 'fields.year' | translate }}</span
+          ><input [(ngModel)]="page.newVehicle.year" name="year" type="number"
+        /></label>
+        <label
+          ><span>{{ 'fields.serial' | translate }}</span
+          ><input [(ngModel)]="page.newVehicle.serial" name="serial"
+        /></label>
+        <label
+          ><span>{{ 'fields.voltage' | translate }}</span
+          ><input [(ngModel)]="page.newVehicle.voltage" name="voltage" type="number"
+        /></label>
+      </div>
+      @if (page.formMessage) {
+        <p class="form-message success" role="status">{{ page.formMessage | translate }}</p>
+      }
+      @if (page.formError) {
+        <p class="form-message error" role="alert">{{ page.formError | translate }}</p>
+      }
+      <button class="button button-primary" type="button" (click)="page.registerVehicle()">
+        {{ 'ui.save' | translate }}
+      </button>
+    </section>
+  }
+
+  @case ('SE-04') {
+    <div class="form-layout">
+      <section class="surface form-panel">
+        <h2>{{ 'sections.serviceInfo' | translate }}</h2>
+        <div class="field-grid">
+          <label
+            ><span>{{ 'ui.vehicle' | translate }}</span
+            ><select [(ngModel)]="page.walkInVehicleId" name="orderVehicle">
+              @for (vehicle of page.vehicles(); track vehicle.id) {
+                <option [value]="vehicle.id">{{ vehicle.makeModel }} · {{ vehicle.serial }}</option>
+              }
+            </select></label
+          >
+          <label
+            ><span>{{ 'fields.failureType' | translate }}</span
+            ><select [(ngModel)]="page.walkInFailure" name="orderFailure">
+              @for (failure of page.failures; track failure.id) {
+                <option [value]="failure.id">{{ page.failureName(failure.id) }}</option>
+              }
+            </select></label
+          >
+          <label
+            ><span>{{ 'ui.priority' | translate }}</span
+            ><select [(ngModel)]="page.walkInPriority" name="orderPriority">
+              <option value="ALTA">{{ 'status.ALTA' | translate }}</option>
+              <option value="MEDIA">{{ 'status.MEDIA' | translate }}</option>
+              <option value="BAJA">{{ 'status.BAJA' | translate }}</option>
+            </select></label
+          >
+        </div>
+        @if (page.formMessage) {
+          <p class="form-message success" role="status">{{ page.formMessage | translate }}</p>
+        }
+        @if (page.newlyCreatedOrder(); as order) {
+          <div class="ticket-card" animate.enter="mov-entrar">
+            <span class="eyebrow">{{ 'sections.orderTicket' | translate }}</span>
+            @if (page.trackingQr(); as qr) {
+              <img class="ticket-qr" [src]="qr" [alt]="'fields.qrCode' | translate" />
+            } @else if (page.qrError()) {
+              <p class="form-message error" role="alert">{{ page.qrError() | translate }}</p>
+            }
+            <strong class="ticket-code">{{ order.trackingCode }}</strong>
+            <span>{{ order.number }}</span>
+            <p>{{ 'messages.orderCreated' | translate }}</p>
+          </div>
+        }
+        <button class="button button-primary" type="button" (click)="page.createWorkOrder()">
+          {{ 'actions.createOrder' | translate }}
+        </button>
+      </section>
+      <aside class="surface summary-panel">
+        <span class="eyebrow">{{ 'sections.vehicleInfo' | translate }}</span>
+        <h2>{{ page.vehicleName(page.walkInVehicleId) }}</h2>
+        <p>{{ page.vehicleById(page.walkInVehicleId)?.serial }}</p>
+        <a class="text-link" routerLink="/recepcion/agenda">{{ 'ui.back' | translate }}</a>
+      </aside>
+    </div>
+  }
+
+  @case ('SE-05') {
+    <div class="dashboard-grid">
+      <section class="surface content-panel">
+        <h2>{{ 'sections.workOrders' | translate }}</h2>
+        <div
+          class="table-wrap"
+          role="region"
+          tabindex="0"
+          [attr.aria-label]="'ui.scrollTableHint' | translate"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>{{ 'ui.code' | translate }}</th>
+                <th>{{ 'ui.vehicle' | translate }}</th>
+                <th>{{ 'ui.status' | translate }}</th>
+                <th>{{ 'ui.price' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of page.orders(); track order.id) {
+                <tr>
+                  <td class="mono">{{ order.number }}</td>
+                  <td>{{ page.vehicleName(order.vehicleId) }}</td>
+                  <td>{{ page.statusKey(order.status) | translate }}</td>
+                  <td>{{ page.formatMoney(95200) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <aside class="surface summary-panel">
+        <span class="eyebrow">{{ 'sections.bookingSummary' | translate }}</span>
+        <h2>{{ page.formatMoney(95200) }}</h2>
+        <div class="summary-row">
+          <span>{{ 'ui.price' | translate }}</span
+          ><strong>{{ page.formatMoney(80000) }}</strong>
+        </div>
+        <div class="summary-row">
+          <span>{{ 'ui.tax' | translate }}</span
+          ><strong>{{ page.formatMoney(15200) }}</strong>
+        </div>
+        <button
+          class="button button-primary"
+          type="button"
+          (click)="page.pageNotice.set('messages.statusUpdated')"
+        >
+          {{ 'actions.deliver' | translate }}
+        </button>
+      </aside>
+    </div>
+  }
+}

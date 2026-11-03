@@ -1,0 +1,62 @@
+:root {
+  --kon: #2b3a55;
+  --ai: #3a4c6e;
+  --tetsukon: #222e44;
+  --kamenozoki: #9cc3bf;
+  --kuchinashi: #e3c27a;
+  --kaki: #c8724f;
+  --kinari: #efe8da;
+  --patron: #3a4b69;
+
+  --color-fondo: var(--kon);
+  --color-superficie: var(--ai);
+  --color-campo: var(--tetsukon);
+  --color-etiqueta: var(--kamenozoki);
+  --color-accion: var(--kuchinashi);
+  --color-registro: var(--kaki);
+  --color-texto: var(--kinari);
+  --color-patron: var(--patron);
+  --color-linea: rgb(156 195 191 / 28%);
+  --color-campo-translucido: rgb(34 46 68 / 78%);
+  --color-accion-halo: rgb(227 194 122 / 15%);
+  --color-velo: color-mix(in srgb, var(--color-etiqueta) 14%, transparent);
+
+  --sombra-registro: 4px 4px 0 var(--color-registro);
+  --sombra-registro-alta: 5px 5px 0 var(--color-registro);
+  --sombra-registro-presionada: 0 0 0 var(--color-registro);
+  --radio-control: 12px;
+  --radio-tarjeta: 18px;
+
+  --fuente-titulo: 'Shippori Mincho', Georgia, serif;
+  --fuente-cuerpo: 'Plus Jakarta Sans', Arial, sans-serif;
+  --fuente-codigo: 'JetBrains Mono', monospace;
+  --texto-etiqueta: 0.75rem;
+  --texto-cuerpo-sm: 0.875rem;
+  --texto-cuerpo: 0.9375rem;
+  --texto-seccion: 1.25rem;
+  --texto-titulo: 1.75rem;
+  --texto-cifra: 2rem;
+
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-5: 24px;
+  --espacio-6: 32px;
+  --espacio-7: 48px;
+  --espacio-8: 64px;
+
+  --desplazamiento-registro: 4px;
+  --duracion-instantanea: 90ms;
+  --duracion-rapida: 160ms;
+  --duracion-base: 240ms;
+  --duracion-vista: 320ms;
+  --duracion-salida: 200ms;
+  --duracion-tinta: 900ms;
+  --retardo-tinta: 150ms;
+  --retardo-esqueleto: 300ms;
+  --escalon: 40ms;
+  --curva-entrada: cubic-bezier(0.22, 1, 0.36, 1);
+  --curva-salida: cubic-bezier(0.55, 0, 1, 0.45);
+  --curva-sello: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

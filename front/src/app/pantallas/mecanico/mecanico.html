@@ -1,0 +1,169 @@
+@switch (page.screenId()) {
+  @case ('ME-01') {
+    <div class="metric-grid">
+      <article class="surface metric-card">
+        <span class="metric-value">{{ page.orders().length }}</span
+        ><span>{{ 'sections.workOrders' | translate }}</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">03</span><span>{{ 'sections.queue' | translate }}</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">B1</span><span>{{ 'sections.repairProgress' | translate }}</span>
+      </article>
+    </div>
+    <section class="work-order-grid">
+      @for (order of page.orders(); track order.id) {
+        <article class="surface work-order-card">
+          <div class="order-card-top">
+            <span class="mono code">{{ order.number }}</span>
+            <span class="status-badge" [class]="page.statusTone(order.status)">{{
+              page.statusKey(order.status) | translate
+            }}</span>
+          </div>
+          <h2>{{ page.vehicleName(order.vehicleId) }}</h2>
+          <p>{{ page.orderDiagnosis(order) }}</p>
+          <div class="order-meta">
+            <span
+              >{{ 'ui.priority' | translate }} ·
+              {{ page.priorityKey(order.priority) | translate }}</span
+            >
+            <span>{{ order.mechanic || ('status.SIN_ASIGNAR' | translate) }}</span>
+          </div>
+          <a class="button button-secondary" [routerLink]="['/mecanico/orden', order.id]">{{
+            'ui.viewDetails' | translate
+          }}</a>
+        </article>
+      }
+    </section>
+  }
+
+  @case ('ME-02') {
+    <div class="dashboard-grid">
+      <section class="surface content-panel">
+        @if (page.selectedOrder(); as order) {
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow mono">{{ order.number }}</span>
+              <h2>{{ page.vehicleName(order.vehicleId) }}</h2>
+            </div>
+            <span class="status-badge" [class]="page.statusTone(order.status)">{{
+              page.statusKey(order.status) | translate
+            }}</span>
+          </div>
+          <div class="summary-row">
+            <span>{{ 'fields.failureType' | translate }}</span
+            ><strong>{{ page.orderDiagnosis(order) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ 'fields.assignedMechanic' | translate }}</span
+            ><strong>{{ order.mechanic || '—' }}</strong>
+          </div>
+          <div class="photo-placeholder">
+            <span class="photo-icon" aria-hidden="true">＋</span
+            ><strong>{{ 'sections.vehicleInfo' | translate }}</strong
+            ><span>{{ 'messages.photoLater' | translate }}</span>
+          </div>
+          <div class="timeline">
+            @for (step of order.timeline; track $index; let last = $last) {
+              <div class="timeline-step" [class.current]="last">
+                <span class="timeline-marker" aria-hidden="true"></span
+                ><span>{{ page.timelineText(step) }}</span>
+              </div>
+            }
+          </div>
+          @if (page.validTransitions().length) {
+            <div class="transition-actions">
+              <span class="eyebrow">{{ 'ui.actions' | translate }}</span>
+              @for (next of page.validTransitions(); track next) {
+                <button
+                  class="button button-primary"
+                  type="button"
+                  (click)="page.requestTransition(next, $event)"
+                >
+                  {{ page.transitionActionKey(next) | translate }}
+                </button>
+              }
+            </div>
+          }
+          @if (page.pendingTransition(); as next) {
+            <div
+              #confirmationDialog
+              class="confirm-row"
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="confirmation-message"
+              tabindex="-1"
+              (keydown)="page.trapConfirmationFocus($event, confirmationDialog)"
+              animate.enter="mov-entrar"
+            >
+              <span id="confirmation-message">{{
+                'messages.confirmTransition'
+                  | translate: page.transitionMessageParams(order.status, next)
+              }}</span>
+              <button
+                class="button button-primary"
+                type="button"
+                (click)="page.confirmTransition()"
+              >
+                {{ 'ui.confirm' | translate }}
+              </button>
+              <button class="text-button" type="button" (click)="page.closeConfirmation()">
+                {{ 'ui.cancel' | translate }}
+              </button>
+            </div>
+          }
+        }
+      </section>
+      <aside class="surface summary-panel">
+        <span class="eyebrow">{{ 'sections.technicalNotes' | translate }}</span>
+        <p>{{ page.selectedOrder().diagnosis }}</p>
+        <a
+          class="text-link"
+          [routerLink]="['/mecanico/expediente', page.selectedOrder().vehicleId]"
+          >{{ 'actions.openHistory' | translate }}</a
+        >
+      </aside>
+    </div>
+  }
+
+  @case ('ME-03') {
+    <div class="dashboard-grid">
+      <section class="surface content-panel">
+        <span class="eyebrow">{{ 'sections.vehicleInfo' | translate }}</span>
+        <h2>{{ page.vehicleName(page.routeParams().get('vehicleId') ?? 'V8') }}</h2>
+        @if (page.vehicleById(page.routeParams().get('vehicleId') ?? 'V8'); as vehicle) {
+          <div class="summary-row">
+            <span>{{ 'fields.serial' | translate }}</span
+            ><strong class="mono">{{ vehicle.serial }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ 'fields.voltage' | translate }}</span
+            ><strong>{{ vehicle.voltage }} V</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ 'fields.battery' | translate }}</span
+            ><strong>{{ vehicle.battery }}</strong>
+          </div>
+        }
+        <h3>{{ 'sections.technicalNotes' | translate }}</h3>
+        <div class="timeline">
+          @for (order of page.orders(); track order.id) {
+            <div class="timeline-step">
+              <span class="timeline-marker" aria-hidden="true"></span>
+              <div>
+                <strong>{{ order.number }} · {{ page.statusKey(order.status) | translate }}</strong>
+                <p>{{ page.orderDiagnosis(order) }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+      <aside class="surface photo-placeholder large-placeholder">
+        <span class="photo-icon" aria-hidden="true">＋</span
+        ><strong>{{ 'sections.vehicleInfo' | translate }}</strong
+        ><span>{{ 'messages.photoLater' | translate }}</span>
+      </aside>
+    </div>
+  }
+}

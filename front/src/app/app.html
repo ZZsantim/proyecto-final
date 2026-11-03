@@ -1,0 +1,82 @@
+<div class="app-frame">
+  <a class="skip-link" href="#main-content">{{ 'app.skipToContent' | translate }}</a>
+  <header class="topbar">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark" aria-hidden="true">E</span>
+      <span class="brand-name">{{ 'app.name' | translate }}</span>
+    </a>
+
+    @if (user(); as currentUser) {
+      <button
+        class="menu-toggle"
+        type="button"
+        [attr.aria-label]="(menuOpen() ? 'app.closeMenu' : 'app.openMenu') | translate"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="primary-navigation"
+        (click)="toggleMenu()"
+      >
+        <span aria-hidden="true">{{ menuOpen() ? '×' : '☰' }}</span>
+      </button>
+      <nav
+        id="primary-navigation"
+        class="main-nav"
+        [class.is-open]="menuOpen()"
+        [class.mov-cajon-entrar]="menuOpen()"
+        [attr.aria-label]="'app.navigation' | translate"
+      >
+        @for (item of navigation(); track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            (click)="closeMenu()"
+          >
+            {{ item.label | translate }}
+          </a>
+        }
+      </nav>
+    } @else {
+      <span class="topbar-caption">{{ 'app.tagline' | translate }}</span>
+    }
+
+    <div class="topbar-actions">
+      <button
+        class="language-switch"
+        type="button"
+        (click)="toggleLanguage()"
+        [attr.aria-label]="
+          ('app.changeLanguage' | translate) + ' ' + (language() === 'es' ? 'EN' : 'ES')
+        "
+      >
+        {{ language() === 'es' ? 'EN' : 'ES' }}
+      </button>
+      @if (user(); as currentUser) {
+        <span class="user-chip">
+          <span class="avatar" aria-hidden="true">{{ currentUser.name.charAt(0) }}</span>
+          <span class="user-name">{{ currentUser.name }}</span>
+        </span>
+        <button class="text-button logout-button" type="button" (click)="logout()">
+          {{ 'app.signOut' | translate }}
+        </button>
+      } @else {
+        <a class="sign-in-link" routerLink="/iniciar-sesion">
+          {{ 'app.signIn' | translate }}
+        </a>
+      }
+    </div>
+  </header>
+
+  <main class="main-content" id="main-content" tabindex="-1">
+    <div class="demo-banner" role="status">
+      <span class="demo-dot" aria-hidden="true"></span>
+      <span>{{ 'app.demoNotice' | translate }}</span>
+      <span class="demo-label">{{ 'app.demoLabel' | translate }}</span>
+    </div>
+    <router-outlet />
+  </main>
+
+  <footer class="footer">
+    <span>{{ 'app.footer' | translate }}</span>
+    <span class="footer-wave" aria-hidden="true"></span>
+  </footer>
+</div>

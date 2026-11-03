@@ -1,0 +1,49 @@
+<section class="page" [attr.data-view]="screenId()" [attr.data-vista]="screenId()">
+  @if (screenId() === 'PU-01') {
+    <app-public-pages [page]="pageContext" />
+  } @else {
+    <header class="page-heading">
+      <div>
+        <span class="eyebrow">{{ screenId() }} · {{ 'app.name' | translate }}</span>
+        <h1 tabindex="-1">{{ pageTitleKey() | translate }}</h1>
+        <p>{{ pageSubtitleKey() | translate }}</p>
+      </div>
+      @if (user(); as currentUser) {
+        <div class="role-badge">
+          <span class="role-mark" aria-hidden="true"></span>
+          {{ 'roles.' + currentUser.role | translate }}
+        </div>
+      }
+    </header>
+
+    @if (pageNotice()) {
+      <div class="notice success" role="status" animate.enter="mov-entrar">
+        <span class="notice-mark" aria-hidden="true">✓</span>
+        <span>{{ pageNotice() | translate }}</span>
+      </div>
+    }
+    @if (errorMessage()) {
+      <div class="notice error" role="alert" animate.enter="mov-sacudir">
+        {{ errorMessage() | translate }}
+      </div>
+    }
+
+    @switch (pageGroup()) {
+      @case ('publicas') {
+        <app-public-pages [page]="pageContext" />
+      }
+      @case ('cliente') {
+        <app-customer-pages [page]="pageContext" />
+      }
+      @case ('recepcion') {
+        <app-reception-pages [page]="pageContext" />
+      }
+      @case ('mecanico') {
+        <app-mechanic-pages [page]="pageContext" />
+      }
+      @case ('administracion') {
+        <app-admin-pages [page]="pageContext" />
+      }
+    }
+  }
+</section>

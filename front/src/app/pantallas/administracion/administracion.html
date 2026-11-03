@@ -1,0 +1,273 @@
+@switch (page.screenId()) {
+  @case ('AD-01') {
+    <div class="metric-grid">
+      <article class="surface metric-card">
+        <span class="metric-value">24</span><span>{{ 'sections.workOrders' | translate }}</span
+        ><span class="metric-trend">+12 %</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">91 %</span
+        ><span>{{ 'sections.availableSlots' | translate }}</span
+        ><span class="metric-trend">+4 %</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">{{ page.formatMoney(2140000) }}</span
+        ><span>{{ 'ui.price' | translate }}</span
+        ><span class="metric-trend">+8 %</span>
+      </article>
+      <article class="surface metric-card">
+        <span class="metric-value">{{ page.formatRating(4.8) }}</span
+        ><span>{{ 'fields.rating' | translate }}</span
+        ><span class="metric-trend">+{{ page.formatRating(0.2) }}</span>
+      </article>
+    </div>
+    <section class="surface content-panel report-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow"
+            >{{ 'fields.startDate' | translate }} — {{ 'fields.endDate' | translate }}</span
+          >
+          <h2>{{ 'sections.recentActivity' | translate }}</h2>
+        </div>
+        <select [attr.aria-label]="'fields.reportPeriod' | translate">
+          <option>7 {{ 'ui.days' | translate }}</option>
+          <option>30 {{ 'ui.days' | translate }}</option>
+        </select>
+      </div>
+      <div class="bar-chart" role="img" [attr.aria-label]="'sections.weeklyVolume' | translate">
+        @for (height of [36, 58, 45, 80, 66, 94, 72]; track $index) {
+          <div class="chart-column">
+            <span class="chart-bar" [style.height.%]="height"></span
+            ><span class="chart-label">0{{ $index + 1 }}</span>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  @case ('AD-02') {
+    <section class="surface content-panel">
+      <div class="field-grid assignment-controls">
+        <label
+          ><span>{{ 'ui.code' | translate }}</span
+          ><select
+            [ngModel]="page.selectedOrderId()"
+            (ngModelChange)="page.selectedOrderId.set($event)"
+            name="order"
+          >
+            @for (order of page.orders(); track order.id) {
+              <option [value]="order.id">
+                {{ order.number }} · {{ page.vehicleName(order.vehicleId) }}
+              </option>
+            }
+          </select></label
+        >
+        <label
+          ><span>{{ 'fields.assignedMechanic' | translate }}</span
+          ><select [(ngModel)]="page.mechanic" name="mechanic">
+            @for (option of page.mechanics; track option.id) {
+              <option [value]="option.name">{{ option.name }}</option>
+            }
+          </select></label
+        >
+      </div>
+      <div class="summary-row">
+        <span>{{ 'ui.status' | translate }}</span
+        ><span class="status-badge" [class]="page.statusTone(page.selectedOrder().status)">{{
+          page.statusKey(page.selectedOrder().status) | translate
+        }}</span>
+      </div>
+      <button class="button button-primary" type="button" (click)="page.assignMechanic()">
+        {{ 'ui.save' | translate }}
+      </button>
+    </section>
+  }
+
+  @case ('AD-03') {
+    <section class="surface content-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ 'sections.stock' | translate }}</span>
+          <h2>{{ page.parts().length }} {{ 'ui.code' | translate }}</h2>
+        </div>
+        <button
+          class="button button-primary"
+          type="button"
+          (click)="page.pageNotice.set('messages.statusUpdated')"
+        >
+          {{ 'ui.save' | translate }}
+        </button>
+      </div>
+      <div
+        class="table-wrap"
+        role="region"
+        tabindex="0"
+        [attr.aria-label]="'ui.scrollTableHint' | translate"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'ui.code' | translate }}</th>
+              <th>{{ 'ui.details' | translate }}</th>
+              <th>{{ 'sections.stock' | translate }}</th>
+              <th>{{ 'ui.status' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (part of page.parts(); track part.id) {
+              <tr>
+                <td class="mono">{{ part.sku }}</td>
+                <td>{{ page.partName(part.id) }}</td>
+                <td>
+                  {{ page.remainingStock(part.physical, part.reserved) }} / {{ part.physical }}
+                </td>
+                <td>
+                  <span
+                    class="status-badge"
+                    [class]="
+                      page.remainingStock(part.physical, part.reserved) <= part.threshold
+                        ? 'alert'
+                        : 'good'
+                    "
+                    >{{
+                      page.remainingStock(part.physical, part.reserved) <= part.threshold
+                        ? ('status.ALTA' | translate)
+                        : ('status.ACTIVE' | translate)
+                    }}</span
+                  >
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @case ('AD-04') {
+    <section class="surface content-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ 'sections.serviceInfo' | translate }}</span>
+          <h2>{{ page.services.length }} {{ 'ui.service' | translate }}</h2>
+        </div>
+        <button
+          class="button button-primary"
+          type="button"
+          (click)="page.pageNotice.set('messages.statusUpdated')"
+        >
+          {{ 'ui.save' | translate }}
+        </button>
+      </div>
+      <div class="service-grid">
+        @for (service of page.services; track service.id) {
+          <article class="service-card">
+            <span class="mono code">{{ service.code }}</span>
+            <h3>{{ page.serviceName(service.id) }}</h3>
+            <div class="summary-row">
+              <span>{{ 'ui.time' | translate }}</span
+              ><strong>{{ service.durationMinutes }} min</strong>
+            </div>
+            <div class="summary-row">
+              <span>{{ 'ui.price' | translate }}</span
+              ><strong>{{ page.formatMoney(service.labor) }}</strong>
+            </div>
+            <p>{{ page.serviceParts(service.id) }}</p>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  @case ('AD-05') {
+    <section class="surface content-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ 'sections.customerInfo' | translate }}</span>
+          <h2>{{ page.users.length }} {{ 'ui.actions' | translate }}</h2>
+        </div>
+        <button
+          class="button button-primary"
+          type="button"
+          (click)="page.pageNotice.set('messages.statusUpdated')"
+        >
+          {{ 'ui.save' | translate }}
+        </button>
+      </div>
+      <div
+        class="table-wrap"
+        role="region"
+        tabindex="0"
+        [attr.aria-label]="'ui.scrollTableHint' | translate"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'ui.name' | translate }}</th>
+              <th>{{ 'ui.email' | translate }}</th>
+              <th>{{ 'ui.status' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (account of page.users; track account.id) {
+              <tr>
+                <td>{{ account.name }}</td>
+                <td>{{ account.email }}</td>
+                <td>
+                  <span class="status-badge" [class]="account.active ? 'good' : 'alert'">{{
+                    (account.active ? 'status.ACTIVE' : 'status.INACTIVE') | translate
+                  }}</span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @case ('AD-06') {
+    <section class="surface content-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">{{ 'sections.recentActivity' | translate }}</span>
+          <h2>{{ 'pages.AD-06.title' | translate }}</h2>
+        </div>
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="page.pageNotice.set('messages.statusUpdated')"
+        >
+          {{ 'ui.search' | translate }}
+        </button>
+      </div>
+      <div
+        class="table-wrap"
+        role="region"
+        tabindex="0"
+        [attr.aria-label]="'ui.scrollTableHint' | translate"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'ui.date' | translate }}</th>
+              <th>{{ 'ui.name' | translate }}</th>
+              <th>{{ 'ui.action' | translate }}</th>
+              <th>{{ 'ui.code' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (event of page.auditEvents; track event.time) {
+              <tr>
+                <td>{{ event.time }}</td>
+                <td>{{ event.userName }}</td>
+                <td>{{ event.actionKey | translate }}</td>
+                <td class="mono">{{ event.orderNumber }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+}

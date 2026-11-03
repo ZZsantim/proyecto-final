@@ -1,0 +1,201 @@
+@if (page.screenId() === 'PU-01') {
+  <div class="login-layout">
+    <div class="login-story">
+      <span class="eyebrow">{{ 'app.tagline' | translate }}</span>
+      <h1 tabindex="-1">{{ 'auth.loginTitle' | translate }}</h1>
+      <p>{{ 'auth.loginSubtitle' | translate }}</p>
+      <div class="story-art" aria-hidden="true">
+        <span class="art-sun"></span>
+        <span class="art-wheel art-wheel-one"></span>
+        <span class="art-wheel art-wheel-two"></span>
+        <span class="art-frame"></span>
+        <span class="art-handle"></span>
+        <span class="art-shadow"></span>
+      </div>
+      <div class="story-note">
+        <span class="note-mark">01</span>
+        <span>{{ 'ui.greeting' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="surface login-card">
+      <div class="card-heading">
+        <span class="eyebrow">{{ 'app.name' | translate }}</span>
+        <h2>{{ 'auth.loginCardTitle' | translate }}</h2>
+      </div>
+      <form class="stack-form" (ngSubmit)="signIn()">
+        <label>
+          <span>{{ 'ui.email' | translate }}</span>
+          <input
+            #emailField
+            [(ngModel)]="page.email"
+            autocomplete="username"
+            name="email"
+            type="email"
+            required
+          />
+        </label>
+        <label>
+          <span>{{ 'ui.password' | translate }}</span>
+          <input
+            [(ngModel)]="page.password"
+            autocomplete="current-password"
+            name="password"
+            type="password"
+            required
+          />
+        </label>
+        @if (page.formError) {
+          <p class="form-message error" role="alert" animate.enter="mov-sacudir">
+            {{ page.formError | translate }}
+          </p>
+        }
+        <button class="button button-primary full-width" type="submit">
+          {{ 'auth.loginButton' | translate }}
+        </button>
+      </form>
+
+      <div class="divider">
+        <span>{{ 'auth.demoCredentials' | translate }}</span>
+      </div>
+      <p class="helper-text">{{ 'auth.demoHint' | translate }}</p>
+      <div class="demo-accounts">
+        @for (account of page.accountOptions; track account.role) {
+          <button class="account-choice" type="button" (click)="page.signInAs(account)">
+            <span class="account-role">{{ account.labelKey | translate }}</span>
+            <span class="account-email">{{ account.email }}</span>
+          </button>
+        }
+      </div>
+      <p class="card-footer">
+        {{ 'auth.noAccount' | translate }}
+        <a routerLink="/crear-cuenta">{{ 'auth.createAccount' | translate }}</a>
+      </p>
+      <a class="quiet-link" routerLink="/seguimiento/K7M2QX9P4T">{{
+        'actions.track' | translate
+      }}</a>
+    </div>
+  </div>
+} @else {
+  @switch (page.screenId()) {
+    @case ('PU-02') {
+      <div class="form-layout">
+        <div class="surface form-panel">
+          <h2>{{ 'auth.signupTitle' | translate }}</h2>
+          <p class="panel-intro">{{ 'auth.signupSubtitle' | translate }}</p>
+          <form class="stack-form" (ngSubmit)="page.createAccount()">
+            <label>
+              <span>{{ 'ui.name' | translate }}</span>
+              <input [(ngModel)]="page.fullName" name="name" autocomplete="name" required />
+            </label>
+            <label>
+              <span>{{ 'ui.email' | translate }}</span>
+              <input
+                [(ngModel)]="page.email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </label>
+            <label>
+              <span>{{ 'ui.phone' | translate }}</span>
+              <input [(ngModel)]="page.phone" name="phone" type="tel" autocomplete="tel" />
+            </label>
+            <label>
+              <span>{{ 'ui.password' | translate }}</span>
+              <input
+                [(ngModel)]="page.password"
+                name="password"
+                type="password"
+                minlength="10"
+                required
+              />
+            </label>
+            @if (page.formError) {
+              <p class="form-message error" role="alert">{{ page.formError | translate }}</p>
+            }
+            @if (page.formMessage) {
+              <p class="form-message success" role="status">{{ page.formMessage | translate }}</p>
+            }
+            <button class="button button-primary" type="submit">
+              {{ 'auth.signupButton' | translate }}
+            </button>
+          </form>
+          <p class="card-footer">
+            {{ 'auth.hasAccount' | translate }}
+            <a routerLink="/iniciar-sesion">{{ 'auth.signInLink' | translate }}</a>
+          </p>
+        </div>
+        <aside class="surface accent-panel">
+          <span class="panel-number">02</span>
+          <h2>{{ 'sections.vehicles' | translate }}</h2>
+          <p>{{ 'ui.greeting' | translate }}</p>
+          <a class="button button-secondary" routerLink="/iniciar-sesion">{{
+            'auth.signInLink' | translate
+          }}</a>
+        </aside>
+      </div>
+    }
+
+    @case ('PU-03') {
+      <div class="tracking-layout">
+        <div class="surface tracking-search">
+          <span class="eyebrow">{{ 'sections.orderTicket' | translate }}</span>
+          <form class="tracking-form" (ngSubmit)="page.trackOrder()">
+            <label for="tracking-code">{{ 'fields.searchCode' | translate }}</label>
+            <div class="input-action">
+              <input
+                id="tracking-code"
+                [(ngModel)]="page.trackingCode"
+                name="trackingCode"
+                autocomplete="off"
+                required
+              />
+              <button class="button button-primary" type="submit">
+                {{ 'actions.findOrder' | translate }}
+              </button>
+            </div>
+          </form>
+          <p class="helper-text">{{ 'messages.trackingHint' | translate }}</p>
+        </div>
+
+        @if (page.selectedTrackingOrder(); as order) {
+          <article class="surface tracking-result">
+            <div class="result-topline">
+              <span class="eyebrow">{{ 'sections.repairProgress' | translate }}</span>
+              <span role="status" aria-live="polite">
+                <span class="status-badge" [class]="page.statusTone(order.status)">
+                  {{ page.statusKey(order.status) | translate }}
+                </span>
+              </span>
+            </div>
+            <h2>
+              {{
+                page.vehicleTypeKey(page.vehicleById(order.vehicleId)?.type ?? 'SCOOTER')
+                  | translate
+              }}
+            </h2>
+            <p class="vehicle-model">{{ page.vehicleName(order.vehicleId) }}</p>
+            <div class="timeline" [attr.aria-label]="'sections.repairProgress' | translate">
+              @for (step of order.timeline; track $index; let last = $last) {
+                <div
+                  class="timeline-step"
+                  [class.current]="last"
+                  [attr.aria-current]="last ? 'step' : null"
+                >
+                  <span class="timeline-marker" aria-hidden="true"></span>
+                  <span>{{ page.timelineText(step) }}</span>
+                </div>
+              }
+            </div>
+            <div class="estimate-row">
+              <span>{{ 'ui.date' | translate }}</span>
+              <strong>{{ order.estimatedDelivery }}</strong>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  }
+}

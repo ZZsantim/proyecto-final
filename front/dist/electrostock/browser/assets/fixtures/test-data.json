@@ -1,0 +1,80 @@
+{
+  "users": [
+    { "id": "U1", "name": "Laura Méndez", "email": "admin@electrostock.test", "password": "Admin2026!", "role": "ADMIN", "active": true },
+    { "id": "U2", "name": "Ana Ruiz", "email": "recepcion@electrostock.test", "password": "Recep2026!", "role": "RECEPTIONIST", "active": true },
+    { "id": "U3", "name": "Andrés Rojas", "email": "mecanico1@electrostock.test", "password": "Meca2026!a", "role": "MECHANIC", "active": true },
+    { "id": "U4", "name": "Camila Vargas", "email": "mecanico2@electrostock.test", "password": "Meca2026!b", "role": "MECHANIC", "active": true },
+    { "id": "U5", "name": "Pedro Salas", "email": "mecanico3@electrostock.test", "password": "Meca2026!c", "role": "MECHANIC", "active": false },
+    { "id": "U6", "name": "María Gómez", "email": "cliente1@electrostock.test", "password": "Cliente2026!", "role": "CLIENT", "active": true },
+    { "id": "U7", "name": "Julián Pardo", "email": "cliente2@electrostock.test", "password": "Cliente2026!", "role": "CLIENT", "active": true },
+    { "id": "U8", "name": "Diego Torres", "email": "cliente3@electrostock.test", "password": "Cliente2026!", "role": "CLIENT", "active": true }
+  ],
+  "customers": [
+    { "id": "C1", "name": "María Gómez", "document": "CC 1012345678", "email": "cliente1@electrostock.test", "phone": "300 111 2233" },
+    { "id": "C2", "name": "Julián Pardo", "document": "CC 1023456789", "email": "cliente2@electrostock.test", "phone": "300 222 3344" },
+    { "id": "C3", "name": "Sofía Ramírez", "document": "CC 1034567890", "email": "", "phone": "300 333 4455" },
+    { "id": "C4", "name": "Diego Torres", "document": "CE 987654", "email": "cliente3@electrostock.test", "phone": "300 444 5566" }
+  ],
+  "vehicles": [
+    { "id": "V1", "ownerId": "C1", "type": "SCOOTER", "serial": "SC-48-0001", "plate": "", "makeModel": "Xiaomi 4 Pro", "year": 2024, "voltage": 48, "battery": "15 Ah · 18650 13S4P" },
+    { "id": "V2", "ownerId": "C1", "type": "SKATEBOARD", "serial": "PT-36-0002", "plate": "", "makeModel": "Segway E22", "year": 2023, "voltage": 36, "battery": "7,5 Ah" },
+    { "id": "V3", "ownerId": "C3", "type": "E_BIKE", "serial": "BI-48-0003", "plate": "", "makeModel": "Specialized Turbo Vado", "year": 2022, "voltage": 48, "battery": "14 Ah" },
+    { "id": "V4", "ownerId": "C4", "type": "MOTORCYCLE", "serial": "MO-72-0004", "plate": "ABC12D", "makeModel": "Super Soco TC Max", "year": 2024, "voltage": 72, "battery": "45 Ah" },
+    { "id": "V5", "ownerId": "C3", "type": "MONOWHEEL", "serial": "MR-84-0005", "plate": "", "makeModel": "Begode Master", "year": 2023, "voltage": 84, "battery": "30 Ah" },
+    { "id": "V6", "ownerId": "C2", "type": "MICROCAR", "serial": "MC-48-0006", "plate": "XYZ987", "makeModel": "Renault Twizy", "year": 2021, "voltage": 48, "battery": "120 Ah" },
+    { "id": "V7", "ownerId": "C2", "type": "QUADRICYCLE", "serial": "CU-60-0007", "plate": "QWE45F", "makeModel": "Kandi K23", "year": 2022, "voltage": 60, "battery": "100 Ah LiFePO4" },
+    { "id": "V8", "ownerId": "C4", "type": "MOTORCYCLE", "serial": "MO-60-0008", "plate": "FGH34J", "makeModel": "NIU NQi GTS", "year": 2023, "voltage": 60, "battery": "35 Ah" }
+  ],
+  "services": [
+    { "id": "S01", "code": "DIAG", "name": "Diagnóstico general", "labor": 50000, "durationMinutes": 60, "partIds": [] },
+    { "id": "S02", "code": "CAMB-BAT-48", "name": "Cambio de batería 48V", "labor": 40000, "durationMinutes": 60, "partIds": ["R01"] },
+    { "id": "S03", "code": "CAMB-BAT-60", "name": "Cambio de batería 60V", "labor": 45000, "durationMinutes": 60, "partIds": ["R02"] },
+    { "id": "S04", "code": "CAMB-CTR-72", "name": "Cambio de controlador 72V", "labor": 60000, "durationMinutes": 120, "partIds": ["R04"] },
+    { "id": "S05", "code": "MANT-PREV", "name": "Mantenimiento preventivo", "labor": 45000, "durationMinutes": 60, "partIds": ["R06"] },
+    { "id": "S06", "code": "REP-MOT", "name": "Reparación de motor", "labor": 90000, "durationMinutes": 180, "partIds": ["R05"] },
+    { "id": "S07", "code": "AJ-FRENO", "name": "Ajuste rápido de frenos", "labor": 20000, "durationMinutes": 15, "partIds": [] }
+  ],
+  "parts": [
+    { "id": "R01", "sku": "BAT-48-15", "name": "Batería litio 48V 15Ah", "category": "Batería", "price": 1250000, "physical": 3, "reserved": 1, "threshold": 1, "voltage": 48 },
+    { "id": "R02", "sku": "BAT-60-20", "name": "Batería litio 60V 20Ah", "category": "Batería", "price": 1850000, "physical": 1, "reserved": 1, "threshold": 1, "voltage": 60 },
+    { "id": "R03", "sku": "CTR-48-1000", "name": "Controlador 48V 1000W", "category": "Controlador", "price": 380000, "physical": 4, "reserved": 0, "threshold": 2, "voltage": 48 },
+    { "id": "R04", "sku": "CTR-72-3000", "name": "Controlador 72V 3000W", "category": "Controlador", "price": 750000, "physical": 2, "reserved": 1, "threshold": 1, "voltage": 72 },
+    { "id": "R05", "sku": "MOT-HUB-500", "name": "Motor hub 500W", "category": "Motor", "price": 650000, "physical": 2, "reserved": 0, "threshold": 1, "voltage": 48 },
+    { "id": "R06", "sku": "PAS-FRE-01", "name": "Pastillas de freno de disco (par)", "category": "Frenos", "price": 35000, "physical": 20, "reserved": 2, "threshold": 6, "voltage": null },
+    { "id": "R07", "sku": "NEU-10", "name": "Neumático 10 pulgadas", "category": "Ruedas", "price": 80000, "physical": 8, "reserved": 0, "threshold": 4, "voltage": null },
+    { "id": "R08", "sku": "BMS-13S", "name": "Tarjeta BMS 13S 48V", "category": "Batería", "price": 110000, "physical": 5, "reserved": 0, "threshold": 2, "voltage": 48 },
+    { "id": "R09", "sku": "CAR-48-2A", "name": "Cargador 48V 2A", "category": "Cargador", "price": 120000, "physical": 0, "reserved": 0, "threshold": 2, "voltage": 48 },
+    { "id": "R10", "sku": "ACE-PULGAR", "name": "Acelerador de pulgar", "category": "Mandos", "price": 45000, "physical": 6, "reserved": 0, "threshold": 2, "voltage": null }
+  ],
+  "appointments": [
+    { "id": "CT1", "code": "CITA-D0-0001", "ownerId": "C4", "vehicleId": "V8", "serviceId": "S03", "dayOffset": 0, "time": "08:00", "status": "ATENDIDA", "workOrderId": "O1" },
+    { "id": "CT5", "code": "CITA-D0-0002", "ownerId": "C2", "vehicleId": "V7", "serviceId": "S05", "dayOffset": 0, "time": "09:00", "status": "ATENDIDA", "workOrderId": "O6" },
+    { "id": "CT2", "code": "CITA-D1-0003", "ownerId": "C1", "vehicleId": "V1", "serviceId": "S02", "dayOffset": 1, "time": "10:00", "status": "CONFIRMADA", "workOrderId": null },
+    { "id": "CT4", "code": "CITA-D1-0004", "ownerId": "C3", "vehicleId": "V5", "serviceId": "S05", "dayOffset": 1, "time": "08:00", "status": "REPROGRAMADA", "workOrderId": null },
+    { "id": "CT3", "code": "CITA-D2-0005", "ownerId": "C4", "vehicleId": "V4", "serviceId": "S04", "dayOffset": 2, "time": "14:00", "status": "CONFIRMADA", "workOrderId": null },
+    { "id": "CT6", "code": "CITA-DM3-0006", "ownerId": "C4", "vehicleId": "V8", "serviceId": "S01", "dayOffset": -3, "time": "11:00", "status": "CANCELADA", "workOrderId": null },
+    { "id": "CT7", "code": "CITA-DM1-0007", "ownerId": "C1", "vehicleId": "V1", "serviceId": "S01", "dayOffset": -1, "time": "15:00", "status": "NO_ASISTIO", "workOrderId": null },
+    { "id": "CT8", "code": "CITA-D3-0008", "ownerId": "C2", "vehicleId": "V6", "serviceId": "S01", "dayOffset": 3, "time": "09:00", "status": "EN_PROCESO", "workOrderId": null }
+  ],
+  "workOrders": [
+    { "id": "O1", "number": "OT-000001", "trackingCode": "K7M2QX9P4T", "vehicleId": "V8", "priority": "MEDIA", "mechanic": "Andrés Rojas", "status": "EN_REPARACION", "diagnosis": "Batería degradada al 62 %", "estimatedDelivery": "16:00", "timeline": ["Ingresada · 08:02", "Asignada · 08:10", "En diagnóstico · 08:20", "En reparación · 09:05"] },
+    { "id": "O2", "number": "OT-000002", "trackingCode": "H3R8WN2C6Y", "vehicleId": "V3", "priority": "ALTA", "mechanic": "Camila Vargas", "status": "ESPERANDO_REPUESTO", "diagnosis": "Cargador defectuoso. Batería en buen estado.", "estimatedDelivery": "Mañana", "timeline": ["Ingresada", "Asignada", "En diagnóstico", "Esperando repuesto"] },
+    { "id": "O3", "number": "OT-000003", "trackingCode": "P9TZ4D7K2M", "vehicleId": "V6", "priority": "MEDIA", "mechanic": "Andrés Rojas", "status": "FINALIZADA", "diagnosis": "Controlador con MOSFET dañado", "estimatedDelivery": "Entregada", "timeline": ["Ingresada", "En reparación", "Finalizada"] },
+    { "id": "O4", "number": "OT-000004", "trackingCode": "A4F6JX8R3E", "vehicleId": "V1", "priority": "BAJA", "mechanic": "Camila Vargas", "status": "ENTREGADA", "diagnosis": "Mantenimiento preventivo completado", "estimatedDelivery": "Entregada", "timeline": ["Ingresada", "Finalizada", "Entregada"] },
+    { "id": "O5", "number": "OT-000005", "trackingCode": "W2N7C5V9QB", "vehicleId": "V2", "priority": "BAJA", "mechanic": "", "status": "INGRESADA", "diagnosis": "Ajuste de freno", "estimatedDelivery": "Por asignar", "timeline": ["Ingresada"] },
+    { "id": "O6", "number": "OT-000006", "trackingCode": "B8Q5M2R9TX", "vehicleId": "V7", "priority": "BAJA", "mechanic": "Andrés Rojas", "status": "ASIGNADA", "diagnosis": "Mantenimiento preventivo", "estimatedDelivery": "En revisión", "timeline": ["Ingresada", "Asignada"] }
+  ],
+  "failures": [
+    { "id": "F01", "name": "Frenos sin respuesta", "priority": "ALTA", "durationMinutes": 60 },
+    { "id": "F02", "name": "No enciende o batería no carga", "priority": "ALTA", "durationMinutes": 60 },
+    { "id": "F03", "name": "Pérdida de potencia", "priority": "MEDIA", "durationMinutes": 60 },
+    { "id": "F04", "name": "Ruido en el motor", "priority": "MEDIA", "durationMinutes": 45 },
+    { "id": "F05", "name": "Luces o pito sin funcionar", "priority": "BAJA", "durationMinutes": 15 },
+    { "id": "F06", "name": "Ajuste de freno o tornillería", "priority": "BAJA", "durationMinutes": 10 }
+  ],
+  "auditEvents": [
+    { "time": "09:05", "userName": "Andrés Rojas", "actionKey": "actions.startRepair", "orderNumber": "OT-000001" },
+    { "time": "08:20", "userName": "Laura Méndez", "actionKey": "actions.startDiagnosis", "orderNumber": "OT-000001" },
+    { "time": "08:10", "userName": "Ana Ruiz", "actionKey": "actions.createOrder", "orderNumber": "OT-000001" }
+  ]
+}
